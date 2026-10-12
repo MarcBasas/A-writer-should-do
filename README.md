@@ -80,8 +80,10 @@
 - [六维文学DNA结构](#-六维文学dna结构)
 - [反AI机制](#️-反ai机制)
 - [快速开始](#-快速开始)
+- [输出示例](#-输出示例)
 - [文件说明](#-文件说明)
 - [质量保障](#-质量保障)
+- [我的其他项目](#-我的其他项目)
 
 ---
 
@@ -191,19 +193,96 @@
 
 ## 🚀 快速开始
 
-### 用母 Skill 蒸馏新书
+### 1. 安装到 skills 目录
+
+```bash
+git clone https://github.com/masterball-w/A-writer-should-do.git
+
+# Cursor（全局）：~/.cursor/skills/；也可放项目内 .cursor/skills/
+mkdir -p ~/.cursor/skills
+cp -r A-writer-should-do ~/.cursor/skills/a-writer-should-do
+
+# Claude Code（全局）：~/.claude/skills/；也可放项目内 .claude/skills/
+mkdir -p ~/.claude/skills
+cp -r A-writer-should-do ~/.claude/skills/a-writer-should-do
+```
+
+- 目标文件夹建议命名为小写的 `a-writer-should-do`，与 `SKILL.md` 中的 `name` 一致（Cursor 要求 `name` 与所在文件夹同名）。
+- 想直接用现成的子 Skill 仿写，把对应文件夹单独复制到同一个 skills 目录下，例如：
+  `cp -r A-writer-should-do/write-like-zhouguoping ~/.cursor/skills/`
+- 其他支持 `SKILL.md` 的 agent，放进它的 skills 目录即可（Cursor 也会读取 `.agents/skills/`、`~/.claude/skills/`）。
+
+### 2. 准备书籍文本（epub / mobi / azw3）
+
+txt、md 纯文本可以直接用。电子书先用 `scripts/` 里的脚本转成纯文本（需要 Python 3.8+）：
+
+```bash
+cd ~/.cursor/skills/a-writer-should-do   # 或你的安装目录
+mkdir -p ~/books/out                     # 输出目录需事先建好
+
+python3 scripts/extract_epub.py ~/books/书名.epub -o ~/books/out   # 仅用标准库
+python3 scripts/extract_mobi.py ~/books/书名.mobi -o ~/books/out   # 需 pip install mobi，或安装 calibre
+python3 scripts/extract_azw3.py ~/books/书名.azw3 -o ~/books/out   # 需安装 calibre（ebook-convert），或 pip install mobi
+```
+
+输出两个 UTF-8 文件：`书名_fulltext.txt`（按阅读顺序拼接的纯正文）和 `书名_toc.txt`（目录，每行带该章在正文中的字符偏移）。带 DRM 的电子书无法提取，提取失败时不要拿未清洗的 HTML 去分析。
+
+### 3. 在对话中调用
+
+蒸馏一本书（母 Skill）：
+
+```text
+用 a-writer-should-do 蒸馏 ~/books/out/书名_fulltext.txt，
+目录参考 ~/books/out/书名_toc.txt，生成的 write-like-xxx 保存到 ~/.cursor/skills/
+```
+
+也可以输入 `/a-writer-should-do` 显式调用。没有指定保存位置时，Skill 会先向你确认；蒸馏报告保存到当前工作目录。
+
+用子 Skill 写作：
+
+```text
+用 write-like-zhouguoping 写一篇关于"AI 时代人还剩下什么"的随笔，1500 字左右
+```
+
+成稿以 `{文章标题}.md` 保存到当前工作目录。
+
+### 流程说明
+
+**用母 Skill 蒸馏新书**
 
 1. 将 `A-writer-should-do` 目录放置于当前 IDE 的 Skill 目录下
-2. 提供单本图书文本；若为 epub / mobi / azw3，先执行 `scripts/` 下对应提取脚本（见 SKILL.md「十一、脚本使用指南」）
+2. 提供单本图书文本；若为 epub / mobi / azw3，先执行 `scripts/` 下对应提取脚本
 3. Skill 自动按五步流水线执行蒸馏（文本理解 → DNA提取 → 证据验证 → 规则转换 → 编辑校验）
 4. 最终在 Skill 目录下生成一套 `write-like-{作者}/` 文件集（1主文件 + 6维度文件）
 
-### 用子 Skill 指导仿写
+**用子 Skill 指导仿写**
 
 1. 将任一子 Skill（如 `write-like-yuhua-novel`）放置于当前 IDE 的 Skill 目录下
 2. 先读主文件的 **Literary DNA Summary**（最高优先级），再按顺序加载维度1→5落实初稿
 3. 初稿完成后执行维度6全套校验：黑名单 → 真实性检查 → 编辑三问 → 人写技术 → 叙事逻辑自检 → 反模仿伦理
 4. 对照 **Common Failure Modes** 复查，成稿以 `{文章标题}.md` 保存到当前工作目录
+
+## 📝 输出示例
+
+下面的内容全部节选自仓库里已有的 `write-like-zhouguoping` 实例，没有重新生成。
+
+<p align="center"><img src="docs/images/demo.png" alt="一本书 → 子 Skill → 新文章 示意图" width="100%"></p>
+
+**蒸馏产物**：[`write-like-zhouguoping/SKILL.md`](write-like-zhouguoping/SKILL.md) 顶部的 Literary DNA Summary（节选）
+
+> **核心表达机制**：格言短段（单句成段）与密实随感段交错；辩证翻转代替线性论证；「我」字入场再推及「我们」；抽象判断必须落回一个具象物（绿芽、园地、碑）。
+>
+> **生成时最需避免**：俯视说教与「你应该」口吻；鸡汤式乐观；总结升华式结尾；华丽辞藻与精致形容词；网络流行语；给出彻底解决方案或行动清单。
+
+**用这个子 Skill 写的文章**：[`灵魂还有事可做_AI时代人生哲思.md`](write-like-zhouguoping/灵魂还有事可做_AI时代人生哲思.md)（节选）
+
+> 有一回深夜，我试着让一台机器替我写一段文字。它写得很快，字句也通顺，我读完却一点也不动心。我想起从前自己写东西，为一句话想半天，删了又写，写了又删，心里倒是高兴的。
+>
+> 我是可以被替代的。
+>
+> 机器越来越像人，人越来越像机器，这两件事貌似相反，实则相通。如今人人都向机器要答案，渐渐就懒得向自己提问题了。
+
+可以对照着看：摘要里写的"单句成段""辩证翻转""落回具象物"，在文章里分别对应"我是可以被替代的。"这样的单句段、"貌似相反，实则相通"的翻转，以及深夜写字这件具体的事。
 
 ## 📁 文件说明
 
@@ -243,6 +322,10 @@ A-writer-should-do/
 - **两组自检清单**：分析报告自检（10.1）+ 派生文件集自检（10.2）
 - **维度6终检**：黑名单逐条校验 + 文学真实性四项 + 编辑三问 + 人写模拟E1-E8 + 叙事逻辑四项 + 反模仿伦理
 - **Common Failure Modes**：每个子 Skill 内置最多5条高频失败案例（错误/原因/修正），写作前后各对照一遍
+
+## 🔗 我的其他项目
+
+- [supplement-checker](https://github.com/masterball-w/supplement-checker)：拍一张保健品照片，让 agent 查成分研究证据、各地区注册与认证、同成分价格，输出带来源的核查报告
 
 ---
 
