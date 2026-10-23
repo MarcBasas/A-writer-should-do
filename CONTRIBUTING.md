@@ -10,9 +10,9 @@
 - 改母技能 [`SKILL.md`](SKILL.md) 时，不要把七个现成子技能的旧文件名写回去，除非这个 PR 同时迁移那些目录。两套布局现在是分开的，见 README 的「两套布局」。
 - 不要提交整本电子书、未清洗的 HTML，或仍在版权期内的长段原文。种子文本若必须引用，保持短，并在 PR 里说明依据。母技能禁止把原句、人物、情节和独创比喻写进派生技能。
 - 不要加入去除 DRM 的步骤或工具。脚本遇到 DRM 就停止，保持这样。
-- 不要自行添加 `LICENSE`。仓库目前没有许可证，选哪一种由维护者决定。
+- 本仓库以 MIT 许可发布（见 `LICENSE`，版权人 masterball-w，2026）。不要在贡献里改许可证；要换许可证请先问维护者。
 - 提取脚本用 Python 3.8+ 就够。没有测试套件；改 `_text_clean.py` 或 `extract_*.py` 时，请在 PR 里写明你用哪一个你有权使用的小样本手动跑过，以及命令和脚本打印的路径。
-- 行为变更写进 `CHANGELOG.md` 的 `Unreleased`。只改措辞、不改行为的文档，可以不记。
+- 行为变更写进 `CHANGELOG.md`。若最新一节已是已发布版本，在文件顶部另起 `## [Unreleased]`。只改措辞、不改行为的文档，可以不记。
 
 ## What belongs here
 
@@ -31,8 +31,8 @@ Not useful: a restyled copy of an existing child, a full copyrighted book checke
 2. Read the parent [`SKILL.md`](SKILL.md) and, if you touch a child, that child's `SKILL.md` and `06-generation-editor.md`.
 3. Keep one layout per change. The parent template names `01-world-and-material.md` through `06-generation-and-validation.md`. The seven shipped children use `01-author-spirit.md` through `06-generation-editor.md`. A PR that converts one side should say so in the description and update both READMEs.
 4. Do not commit book files, DRM-removal instructions, or long verbatim quotations. A seed passage, if you need one, stays short and structural. The parent skill forbids copying original sentences, names, characters, plots, and original metaphors into a derived skill.
-5. Do not add a `LICENSE` file. There is no license yet; the maintainer chooses one.
-6. If you change extractor behavior or skill behavior, add a note under `## [Unreleased]` in [`CHANGELOG.md`](CHANGELOG.md). Wording-only doc edits do not need one.
+5. The project is MIT, copyright 2026 masterball-w, in [`LICENSE`](LICENSE). Do not change that file in a contribution. Ask the maintainer before any other license.
+6. If you change extractor behavior or skill behavior, add a note in [`CHANGELOG.md`](CHANGELOG.md). When the top section is already a released version, add a new `## [Unreleased]` above it. Wording-only doc edits do not need one.
 7. There is no test suite and no `requirements.txt`. For a script change, run it on a small file you have the rights to use, and paste the command plus the printed paths into the PR. Python 3.8+ is enough. EPUB uses the standard library. MOBI needs `pip install mobi` or Calibre's `ebook-convert`. AZW3 tries Calibre first.
 
 ## Skill edits

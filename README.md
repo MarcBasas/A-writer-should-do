@@ -194,6 +194,7 @@ A-writer-should-do/
 ├── SKILL.md                 # Parent procedure (current distillation spec)
 ├── README.md                # This file
 ├── README_zh.md             # Chinese README
+├── LICENSE                  # MIT License, copyright 2026 masterball-w
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 ├── .github/ISSUE_TEMPLATE/  # Bug report and feature request
@@ -214,7 +215,7 @@ A-writer-should-do/
 └── write-like-moyan/
 ```
 
-Each child folder is the dispatcher plus `01` through `06`. There is no test suite, no `requirements.txt`, and no `LICENSE`.
+Each child folder is the dispatcher plus `01` through `06`. There is no test suite and no `requirements.txt`. The license is MIT; see below.
 
 ## Limitations
 
@@ -233,9 +234,9 @@ Bug reports and feature requests use the templates in [`.github/ISSUE_TEMPLATE/`
 
 ## License
 
-This repository has no `LICENSE` file. GitHub reports no license. Until the maintainer adds one, no open-source license is granted by this repo. Do not assume MIT, Apache-2.0, or any other terms.
+This project is released under the [MIT License](LICENSE). Copyright (c) 2026 masterball-w.
 
-The child skills name copyrighted books and quote passages from them. Those quotations are not relicensed by this note.
+The MIT grant covers the skill files, scripts, and documentation in this repository. Passages quoted from books inside the child skills remain under those books' own copyright. MIT does not relicense those quotations.
 
 ## Maintainer's other project
 

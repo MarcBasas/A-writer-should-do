@@ -27,4 +27,4 @@ Confirm this is not already specified and simply undocumented. The four-genre sp
 
 ## Out of scope
 
-This project does not accept full copyrighted books, DRM-removal steps, or a license file chosen by a contributor. The maintainer adds `LICENSE`.
+This project is MIT (see `LICENSE`). Do not propose a different license here. Full copyrighted books and DRM-removal steps are out of scope.

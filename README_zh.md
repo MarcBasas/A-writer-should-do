@@ -194,6 +194,7 @@ A-writer-should-do/
 ├── SKILL.md                 # 母技能（当前蒸馏规程）
 ├── README.md                # 英文说明
 ├── README_zh.md             # 本文件
+├── LICENSE                  # MIT 许可证，版权人 masterball-w，2026
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
 ├── .github/ISSUE_TEMPLATE/  # Bug 报告与功能请求
@@ -214,7 +215,7 @@ A-writer-should-do/
 └── write-like-moyan/
 ```
 
-每个子目录都是主文件加上 `01` 到 `06`。没有测试、没有 `requirements.txt`、没有 `LICENSE`。
+每个子目录都是主文件加上 `01` 到 `06`。没有测试，也没有 `requirements.txt`。许可证是 MIT，见下文。
 
 ## 已知限制
 
@@ -233,9 +234,9 @@ Bug 和功能请求使用 [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) �
 
 ## 许可证
 
-本仓库没有 `LICENSE` 文件。GitHub 上也没有许可证信息。在维护者加入许可证之前，本仓库不授予任何开源许可。不要假定它是 MIT、Apache-2.0 或其他条款。
+本项目以 [MIT 许可证](LICENSE) 发布。Copyright (c) 2026 masterball-w。
 
-子技能点名了仍受版权保护的书，并引用了其中的段落。本说明并不重新许可这些引文。
+MIT 许可覆盖本仓库中的技能文件、脚本和文档。子技能里引用的图书段落仍归原书版权所有。MIT 不重新许可这些引文。
 
 ## 维护者的其他项目
 

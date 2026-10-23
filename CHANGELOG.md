@@ -3,25 +3,36 @@
 All notable changes to this project are documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
-Versions follow the git tags. `v2.1.0` is the only tag, and it points at the same commit as `main` did when this file was added. There is no `v0.1.0`.
+Versions follow the git tags. `v2.1.0` is the latest tag on `main`. `2.2.0` below is the next release; it is not tagged until that release is published. There is no `v0.1.0`.
 
-本文件记录仓库里确实存在的行为。`v2.1.0` 是目前唯一的 git 标签。没有 `v0.1.0`。
+本文件记录仓库里确实存在的行为。`v2.1.0` 是 `main` 上最新的标签。下面的 `2.2.0` 是下一次发布，打标签之前还不是 git tag。没有 `v0.1.0`。
 
-## [Unreleased]
+## [2.2.0] - 2026-10-23
+
+Documentation release. The parent skill, the seven child skills, and the extractor scripts are unchanged.
+
+### Added
+
+- `LICENSE`: MIT License. Copyright (c) 2026 masterball-w.
+- `README_zh.md`, and an English rewrite of `README.md`. Each file links to the other at the top. Both describe the parent skill, the seven child folders, and the extractor scripts that are in the tree.
+- `CONTRIBUTING.md` (English, with a Chinese summary).
+- `CHANGELOG.md`.
+- GitHub issue templates for bug reports and feature requests (`.github/ISSUE_TEMPLATE/`).
 
 ### Changed
 
-- Rewrote `README.md` in English and added `README_zh.md`, so both describe the parent skill, the seven child folders, and the extractor scripts that are in the tree.
+- The README no longer describes a four-genre specialization system. That system is in the previous README and in the published GitHub release notes for `v2.1.0`. It is not in `SKILL.md` or the child skills.
 - Documented that the parent template (`01-world-and-material.md` … `06-generation-and-validation.md`) and the shipped children (`01-author-spirit.md` … `06-generation-editor.md`) are different layouts.
-- Stopped describing a four-genre specialization system. That system is in the previous README and in the published GitHub release notes for `v2.1.0`. It is not in `SKILL.md` or the child skills.
-- Added `CONTRIBUTING.md`, `CHANGELOG.md`, and GitHub issue templates for bug reports and feature requests.
 
-### 变更
+### 新增与变更
 
-- 用英文重写 `README.md`，并新增 `README_zh.md`。两份说明都只描述仓库里的母技能、七个子目录和提取脚本。
-- 写明母技能模板（`01-world-and-material.md` 至 `06-generation-and-validation.md`）和已入库子技能（`01-author-spirit.md` 至 `06-generation-editor.md`）是两套布局。
+文档发布。母技能、七个子技能和提取脚本的行为没有改动。
+
+- 新增 `LICENSE`：MIT 许可证。Copyright (c) 2026 masterball-w。
+- 用英文重写 `README.md`，并新增 `README_zh.md`。两份说明顶部互相链接，都只描述仓库里的母技能、七个子目录和提取脚本。
+- 新增 `CONTRIBUTING.md`（英文，附中文摘要）、`CHANGELOG.md`，以及 Bug 报告和功能请求的 Issue 模板（`.github/ISSUE_TEMPLATE/`）。
+- README 写明母技能模板（`01-world-and-material.md` 至 `06-generation-and-validation.md`）和已入库子技能（`01-author-spirit.md` 至 `06-generation-editor.md`）是两套布局。
 - 不再把「四类文体特化」写成现有功能。该说法出现在旧 README 和已发布的 `v2.1.0` Release 说明里，不在 `SKILL.md` 或子技能文件里。
-- 新增 `CONTRIBUTING.md`、`CHANGELOG.md`，以及 Bug 报告和功能请求的 Issue 模板。
 
 ## [2.1.0] - 2026-10-12
 
@@ -71,5 +82,5 @@ First tagged snapshot of the repository: a parent agent skill, seven child writi
 - 七个子技能仍是旧的六维文件名（`01-author-spirit.md` 至 `06-generation-editor.md`），书目见上表。维度 6 有清单 A1–A13、B1–B8、C1–C6、D1–D5 和 E1–E8。`write-like-zhouguoping` 另有一篇示例文章。
 - 同标签中的已知缺口：两套文件名未统一；语言层要求的统计脚本不在 `scripts/`；MOBI 解包路径的目录偏移按序号配对；EPUB 3 nav 的层级恒为 0；`-o` 目录必须事先存在；无测试、无 `requirements.txt`、无 `LICENSE`。
 
-[Unreleased]: https://github.com/masterball-w/A-writer-should-do/compare/v2.1.0...HEAD
+[2.2.0]: https://github.com/masterball-w/A-writer-should-do/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/masterball-w/A-writer-should-do/releases/tag/v2.1.0
