@@ -1,280 +1,183 @@
-<div align="center">
+[English](README.md) · [中文](README_zh.md)
 
-# 📖 A-writer-should-do
+# A-writer-should-do
 
-**六维文学DNA蒸馏** — 从单本图书文本中提取作者理解世界的方式，<br>生成可直接调用的写作指导 Skill，内置反AI检测机制
+An agent skill that reads one book and compiles a second skill for drafting, rewriting, and checking new prose in that work's verified patterns.
 
-[![Stars](https://img.shields.io/github/stars/masterball-w/A-writer-should-do?style=flat-square&logo=github&color=yellow)](https://github.com/masterball-w/A-writer-should-do/stargazers)
-[![Forks](https://img.shields.io/github/forks/masterball-w/A-writer-should-do?style=flat-square&logo=git&color=orange)](https://github.com/masterball-w/A-writer-should-do/forks)
-[![Issues](https://img.shields.io/github/issues/masterball-w/A-writer-should-do?style=flat-square&color=red)](https://github.com/masterball-w/A-writer-should-do/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/masterball-w/A-writer-should-do?style=flat-square&logo=git&color=blue)
-](https://github.com/masterball-w/A-writer-should-do/commits/main)
-[![Repo Size](https://img.shields.io/github/repo-size/masterball-w/A-writer-should-do?style=flat-square&color=green)]()
-![Languages](https://img.shields.io/github/languages/count/masterball-w/A-writer-should-do?style=flat-square&color=lightgrey)
-
-![Skill](https://img.shields.io/badge/Skill-Literary%20DNA%20Distillation-orange?style=flat-square)
+[![Stars](https://img.shields.io/github/stars/masterball-w/A-writer-should-do?style=flat-square&logo=github)](https://github.com/masterball-w/A-writer-should-do/stargazers)
+[![Tag](https://img.shields.io/github/v/tag/masterball-w/A-writer-should-do?style=flat-square&label=tag)](https://github.com/masterball-w/A-writer-should-do/releases/tag/v2.1.0)
 ![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=flat-square&logo=python&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown-000000?style=flat-square&logo=markdown&logoColor=white)
-![Anti-AI](https://img.shields.io/badge/Anti--AI-Built--in%20Detection-brightgreen?style=flat-square)
-![Instances](https://img.shields.io/badge/Style%20Instances-7-blueviolet?style=flat-square)
+![Child skills](https://img.shields.io/badge/child%20skills-7-blueviolet?style=flat-square)
 
-</div>
+This repository is a set of `SKILL.md` instructions for an agent host (Cursor, Claude Code, or another host that loads a skill folder). It is not a model, a Python library, or a program that restyles text by itself. The Python files only turn EPUB, MOBI, and AZW3 files into plain text.
 
----
+The current git tag is [`v2.1.0`](https://github.com/masterball-w/A-writer-should-do/releases/tag/v2.1.0), and it points at `main`. The parent skill and the seven included child skills do not use the same filenames. See [Two layouts in this repository](#two-layouts-in-this-repository).
 
-## 📢 更新动态
+## What it is
 
-### v2.1 文体特化体系与反AI黑名单升级
+The parent skill, [`SKILL.md`](SKILL.md) (`name: a-writer-should-do`), is the distillation procedure. You give the agent the full text of one book. It samples the book by function, keeps only patterns that have evidence, and writes a child folder `write-like-{author-or-work}/` plus a report `{书名}_声纹蒸馏报告.md` in the working directory.
 
-> 本次更新把「文体差异化权重」从一张权重表升级为**贯穿分析/提取/生成/校验四阶段的文体特化体系**，并新增黑名单 A13 对抗最高频的 AI 腔痕迹；子实例增至 7 个。
+A child skill is what you load when you want new prose. The seven folders already in the repo are finished children. Each one says it was distilled from a single book, and each one says it does not cover that author's other books.
 
-**核心变化**
+The parent skill's own rules:
 
-- **文体特化要求（第五节）**：四类文体各有一组强制执行项——
-  - 虚构类：人物谱系建构（称谓/排行/辈分/关系/身份处境/性格复杂性）、台词真实性、叙事松散边界（插叙/跑题/转述链须有风格功能与回收）、人物关系网复杂度评估与事件波及规则
-  - 非虚构论述类：论点真实性校验（禁虚构事实/伪造引用/夸大证据，不确定内容显式标注）、论据细节展开（语境/过程/数字/来源/限制条件/推理路径，可检查可复现）
-  - 散文随笔类：个人经验来源感、情绪推进路径与峰值、片段组装与贯穿机制、留白位置-功能清单
-  - 实用类：一步一动作、操作可行性、术语全文一致、文体规范与作者特征分界
-- **四处同步落实**：六维提取细则新增「文体专项提取点」；派生主文件模板新增「七、文体特化约束」节；维度6模板 B节增文体专项真实性、E节增文体适配项；质量自检清单增对应校验项
-- **黑名单新增 A13「句尾顿悟点评与缀饰」**：禁止叙述或描写完成后在句尾追加极短论断、感悟或修饰（事实+顿悟、描写+缀饰两段式，如“两样钱，都黑”“眉毛蜷起来，像烧过的纸”）；默认整句删除，叙述在事实本身处停止；已同步至全部 7 个子 Skill 的维度6
-- **新子实例 `write-like-moyan` 入库**：基于《蛙》蒸馏的莫言后期忏悔期风格（书信/转述体 + 说书人双视角 + 判决悬置 + 无引号冒号对话流），实例数 6→7
+- One book stands for that work, that period, and that genre. A stable author-level fingerprint needs the same mechanism in at least three works from different periods.
+- A core fingerprint needs at least three pieces of evidence from different chapters and at least one counterexample. A count is a reason to look, not a reason to keep the pattern.
+- Do not copy sentences, proper names, characters, plots, original metaphors, or real biographical episodes into new writing.
+- Words such as "cold" or "light" are not instructions. They are checked only after architecture, material, and sentence behavior are already in the draft.
 
-### v2.0 六维文学DNA架构重构
+## Features
 
-> 本次更新是一次**架构级重构**：不增加分析模块，而是合并重叠维度、提高单模块信息密度，让中等上下文模型也能稳定执行全流程，并让蒸馏目标从"像作者说话"升级为"**像作者理解世界**"。
+What the parent skill actually specifies:
 
-**核心变化**
+- **Six-step distillation**, after an extract-and-clean step: decide the work's boundary, build a stratified sample set with metadata, extract four fingerprint layers, check evidence and counterexamples, compile operation cards, then run a regression on three short samples (800–1500 Chinese characters: a low-conflict scene, a high-pressure scene, and a memory / argument / exposition scene).
+- **Four layers, kept separate.** Architecture (what state a unit enters and leaves), content (what is selected and how much space it gets), language (measured per function: narration, dialogue, memory, argument), and a final "qi-yun" check that must still be visible after the signature words are deleted.
+- **Operation cards** with one format: input, steps, observable output, pass/fail check, rework, evidence id, and where the card does not apply. Low-frequency observations stay in the report and do not become generation rules.
+- **Four grades inside a child skill:** A, global constraints loaded before the draft; B, three to five scene cards per scene; C, the language profile for the current function; D, end-of-draft checks, including common AI failures. D-level negative samples are not loaded while the draft is being written.
+- **Shared working tables:** a character-interest table, a scene card, a paragraph card, and a dialogue-action table. The dialogue table is for analyzing continuous quoted speech the source book already has. If the book reports speech instead, the table is not a generation step.
+- **Where files go.** The report stays in the working directory. The child skill goes to a directory you name; if you do not name one, the agent asks. A finished piece is saved as `{title}.md` in the working directory, and a name clash gets a numeric suffix instead of a silent overwrite.
 
-- **八维 → 六维**：原八个维度文件两两合并为六个文学DNA维度，全部既有规则无损保留，删除的是重复与理论膨胀
-- **黑名单去重**：AI典型写法黑名单原先在每个维度文件中重复收录（占近半篇幅），现唯一收录于 `06-generation-editor.md`
-- **流水线精简**：删除独立的反AI扫描步骤与独立人格分析步骤，边界声明只执行一次，主干收敛为五步
-- **新增两个轻量组件**（不新增模块）：每个子 Skill 顶部增加 ≤500字的 **Literary DNA Summary**（最高优先级参考）与最多5条的 **Common Failure Modes**（错误/原因/修正，防止"像作者但没有文学价值"）
+What each shipped child skill contains (this is the older layout, still the files on disk):
 
-**维度合并对照**
+- A dispatcher `SKILL.md` with a Literary DNA Summary, a short style charter, the load order, up to five Common Failure Modes (`错误` / `原因` / `修正`), a checklist, a seed-text library used as structure reference, and a boundary note.
+- Six dimension files, loaded in order: spirit, motifs, narrative mechanism, rhythm, technique and negative space, then a final edit.
+- In dimensions 1–5, rules are marked ✅ (follow), ❌ (avoid), 💡 (optional technique), and 🤖 (AI-pattern avoidance for that dimension). A rule sometimes cites a count from the book. The child files do not define one numeric cutoff that every ✅ must meet. The three-instance rule is the parent skill's.
+- Inside one child, the A1–A13 table lives only in dimension 6 (`06-generation-editor.md`): sentence patterns A1–A13, diction B1–B8, structure C1–C6, texture D1–D5, then a reality check, three edit questions (what to delete, where to pause, where to leave a gap), human-writing moves E1–E8, a narrative-logic pass, and an anti-imitation section. Dimensions 1–5 still have their own 🤖 lines. The list is a checklist for the agent, not a classifier.
 
-| 原八维 | 新六维 |
-|---|---|
-| 整体风格与人格底色 | 01 作者精神模型 |
-| 主题取向 + 认知价值 | 02 母题与世界观 |
-| 谋篇布局 + 行文逻辑 | 03 叙事结构机制 |
-| 节奏密度 + 词句习惯 | 04 语言节奏系统 |
-| 修辞策略 + 负空间分析 | 05 表达技法与留白 |
-| 反AI检测 + 编辑层 + 反模仿伦理 | 06 生成约束与编辑校验 |
+Ebook extraction, which both the parent skill and the scripts implement:
 
-**对使用者的影响**
+| Script | Input | Dependencies | Behavior in code |
+|---|---|---|---|
+| `scripts/extract_epub.py` | `.epub` | Python standard library | Reads `META-INF/container.xml`, walks the OPF spine, strips non-body markup, writes plain text in spine order |
+| `scripts/extract_mobi.py` | `.mobi` | `pip install mobi`, or Calibre's `ebook-convert` | Tries the `mobi` package first, then Calibre. The Calibre path converts to EPUB and reuses the EPUB script |
+| `scripts/extract_azw3.py` | `.azw3` | Calibre's `ebook-convert`, or `pip install mobi` | Tries Calibre first, then the MOBI script |
+| `scripts/_text_clean.py` | none (not a CLI) | standard library | Shared HTML-to-text cleaner and `h1`–`h6` heading index |
 
-- 旧的 `01-style-personality.md` 等八个维度文件已全部移除，引用旧文件名的流程须改用新文件名
-- 6个存量子 Skill（含新入库的 `write-like-lijieren`）均已同步重构，种子文本库与风格化规则完整保留
-- 顺带修复：lijieren 黑名单补齐 A11、清除旧版"以原文为模板改写"的违规表述、移除 pha 种子库中违反反模仿伦理的"生成示范"
+Each extractor writes two UTF-8 files next to each other:
 
----
+- `{stem}_fulltext.txt` — body text
+- `{stem}_toc.txt` — one entry per line: `index<TAB>indented title<TAB>character offset` into the full text
 
-## 📑 目录
+EPUB contents come from the NCX nav map, then an EPUB 3 `nav` document named `nav.xhtml`, `nav.html`, or `toc.xhtml`, then `h1`–`h6` headings if both are missing. The scripts exit with an error when the file is missing, the container has no OPF, or no body text is found. DRM-protected files are not unpacked; the MOBI and AZW3 scripts tell you to remove DRM yourself and then stop. This repository does not include DRM-removal steps.
 
-- [更新动态](#-更新动态)
-- [概述](#-概述)
-- [架构原则](#-架构原则)
-- [母子 Skill 界定](#️-母子-skill-界定)
-- [子 Skill 实例一览](#-子-skill-实例一览)
-- [工作流程](#-工作流程)
-- [六维文学DNA结构](#-六维文学dna结构)
-- [反AI机制](#️-反ai机制)
-- [快速开始](#-快速开始)
-- [输出示例](#-输出示例)
-- [文件说明](#-文件说明)
-- [质量保障](#-质量保障)
-- [我的其他项目](#-我的其他项目)
+## Two layouts in this repository
 
----
+New distillations follow the parent [`SKILL.md`](SKILL.md). It tells the agent to create:
 
-## ✨ 概述
-
-**A-writer-should-do** 是一个文学风格蒸馏 Skill（母 Skill）：从单本图书文本中蒸馏作者的**六维文学DNA**，将特征转化为可执行的写作规则，输出一套派生写作指导 Skill 文件集（子 Skill）。
-
-与统计词频式的风格提取不同，本 Skill 的蒸馏目标是**作者解释世界的方法**——他如何观察、同情什么、恐惧什么、如何处理痛苦、为什么这样安排叙事。语言习惯只是这套精神模型的外壳。
-
-> 💡 生成的子 Skill 不只让文本"像作者说话"，更重要的是"像作者理解世界"。
-
-## 🧭 架构原则
-
-1. **模块少而密**：六个维度，不再增加。文学特征天然重叠，合并优先于细分——让中等上下文模型也能稳定执行全流程。
-2. **文学有效性检验**：任何分析概念必须回答"它能改变最终生成文本吗？"不能直接影响生成质量的，不作为独立模块存在。
-3. **像作者理解世界，而非像作者说话**：蒸馏终点是世界观与判断方式，避免"像作者但没有文学价值"的空壳仿写。
-
-## 🏗️ 母子 Skill 界定
-
-| 层级 | 名称 | 角色 | 说明 |
-|:---:|---|---|---|
-| 🏭 母 Skill | `A-writer-should-do` | 特征蒸馏方法论 | 定义提取原则、五步流水线、六维细则、转换法则、模板与自检清单。是生成子 Skill 的"工厂" |
-| 📄 子 Skill | `write-like-{作者}` | 派生写作指导实例 | 由母 Skill 以单本书为输入蒸馏生成，含 Literary DNA Summary、六维规则文件、种子文本库与失败案例，直接用于仿写 |
-
-## 🎨 子 Skill 实例一览
-
-| # | 子 Skill | 蒸馏来源 | 风格定位 |
-|:---:|---|---|---|
-| 1 | `write-like-pha` | 《人生拒绝清单》（pha 著，程俐 译） | "废柴"自嘲式言说、否定式命题、人生减负哲学 |
-| 2 | `write-like-zhouguoping` | 《周国平人生哲思录》 | 冲淡平和的哲理散文、格言-随感交替、思辨翻转 |
-| 3 | `write-like-yuhua` | 《我们生活在巨大的差距里》 | 余华散文杂文：平静叙述荒诞、并置对照、日常物承载思想 |
-| 4 | `write-like-yuhua-novel` | 《活着》 | 余华小说：冷峻克制、民间口语、白描死亡、拒绝升华 |
-| 5 | `write-like-liuzhenyun` | 《一日三秋》 | 刘震云：以笑话写哭、日常物丈量生死、链条对话、绕圈归因 |
-| 6 | `write-like-lijieren` | 《死水微澜》 | 李劼人：方志家立场、分层语言、清单式密度、白描不评判 |
-| 7 | `write-like-moyan` | 《蛙》 | 莫言后期忏悔期：说书人+忏悔者双视角、转述链多版本、无引号冒号对话流、判决悬置 |
-
-> 📌 同一作者的不同文体可分别蒸馏、并存使用（如 `write-like-yuhua` 与 `write-like-yuhua-novel`）：散文任务用散文版，小说任务用小说版。
-
-## 🔄 工作流程
-
-```
-输入书籍文本（epub / mobi / azw3 需先经步骤0脚本提取）
-    │
-    ▼
-步骤0  源文本准备（extract_epub / extract_mobi / extract_azw3 →
-        {书名}_fulltext.txt 纯正文 + {书名}_toc.txt 索引式目录）
-    │
-    ▼
-步骤1  文本理解（文体判定 / 文本属性 / 边界声明一次完成 / 全局锚定）
-    │
-    ▼
-步骤2  六维文学DNA提取（反AI特征随维度同步识别，不单独扫描）
-    │
-    ▼
-步骤3  原文证据验证（频次≥3 / 降噪排除 / 例证回填）
-    │
-    ▼
-步骤4  生成规则转换（特征→祈使规则 + DNA摘要 + 失败案例 + 种子文本）
-    │
-    ▼
-步骤5  编辑校验（文件集质量自检）
-    │
-    ▼
-输出：write-like-{作者}/  （1个主调度文件 + 6个维度文件）
-    │
-    ▼
-派生 Skill 执行写作任务时，成稿以 {文章标题}.md 保存到当前工作目录
+```text
+write-like-{author-or-work}/
+├── SKILL.md
+├── 01-world-and-material.md
+├── 02-character-and-information.md
+├── 03-architecture-and-scene.md
+├── 04-voice-and-syntax.md
+├── 05-expression-and-space.md
+└── 06-generation-and-validation.md
 ```
 
-## 🧬 六维文学DNA结构
+It also asks for a `_meta/` directory of sample records (JSON or CSV) during analysis. No `_meta/` example is checked in.
 
-派生 Skill 以文件集形式输出，主 `SKILL.md` 规定执行顺序，六个维度各为独立文件：
+The seven children below were built earlier. Their files are `01-author-spirit.md`, `02-theme-worldview.md`, `03-narrative-mechanism.md`, `04-language-rhythm.md`, `05-expression-and-space.md`, and `06-generation-editor.md`. Load those files when you use these children. Do not rename them to the parent template; nothing in the repo maps one name to the other.
 
-| 执行顺序 | 文件 | 维度 | 核心问题 |
-|:---:|---|---|---|
-| 1 | `01-author-spirit.md` | 作者精神模型 | 作者如何解释世界？（观察方式/同情对象/恐惧对象/情绪底色/叙事距离） |
-| 2 | `02-theme-worldview.md` | 母题与世界观 | 作者反复书写什么、回避什么，如何判断人性？ |
-| 3 | `03-narrative-mechanism.md` | 叙事结构机制 | 作者为什么这样安排？（开篇/展开/信息隐藏/转折/结尾的动机） |
-| 4 | `04-language-rhythm.md` | 语言节奏系统 | 作者什么时候短、什么时候长？（一切节奏规则写成条件式） |
-| 5 | `05-expression-and-space.md` | 表达技法与留白 | 作者怎么写，以及刻意不写什么？（意象/比喻/负空间分析） |
-| 6 | `06-generation-editor.md` | 生成约束与编辑校验 | 初稿哪里像AI？哪里不像作者？哪里该删？ |
+| Child folder | Book named in that skill | Scope the skill itself states |
+|---|---|---|
+| `write-like-pha` | 《人生拒绝清单》, pha, translated by 程俐 | Self-deprecating, negative definitions. Language rules include the translator. |
+| `write-like-zhouguoping` | 《人生哲思录》 | Aphorism plus informal essay. Not his academic books. |
+| `write-like-yuhua` | 《我们生活在巨大的差距里》 | Yu Hua's essays in that collection. Not his novels. |
+| `write-like-yuhua-novel` | 《活着》 | The novel. The skill says to use this folder, not `write-like-yuhua`, for fiction. |
+| `write-like-liuzhenyun` | 《一日三秋》 | That novel's telling voice. Not his other novels. |
+| `write-like-lijieren` | 《死水微澜》 | That novel. Not the later two books of the trilogy. |
+| `write-like-moyan` | 《蛙》 | Later Mo Yan: reported speech, a letter frame, suspended judgment. The skill says it does not cover the density of 《红高粱》 or 《生死疲劳》. |
 
-每个子 Skill 的 `SKILL.md` 还包含两个轻量组件：
+The [v2.1.0 release notes](https://github.com/masterball-w/A-writer-should-do/releases/tag/v2.1.0) and the previous README describe a four-genre rule set (fiction, argumentative nonfiction, essay, practical writing) applied at analysis, extraction, generation, and checking. Those sections are not in `SKILL.md` or in the child files. This README does not treat them as current behavior.
 
-- **Literary DNA Summary**（≤500字，最高优先级）：作者如何看世界 / 如何选择人物 / 如何处理痛苦 / 核心表达机制 / 生成时最需避免什么
-- **Common Failure Modes**（≤5条）：每条按「错误 / 原因 / 修正」三要素组织，防止"像作者但没有文学价值"
+## Install
 
-维度1-5的规则四类标记：
-
-| 标记 | 规则类型 | 来源 |
-|:---:|---|---|
-| ✅ | 遵循（硬性规则） | 频次≥3处验证通过的核心特征 |
-| ❌ | 避免（排除规则） | 降噪项 |
-| 💡 | 可选（局部技法） | 频次不足3次 |
-| 🤖 | AI特征规避 | 与本维度直接相关的反AI特征 |
-
-## 🛡️ 反AI机制
-
-| 层级 | 机制 | 说明 |
-|:---:|---|---|
-| 1️⃣ | 随维度同步识别 | 提取每个维度时按[反AI]识别要点标注对抗AI生成模式的作者特征，不设独立扫描步骤 |
-| 2️⃣ | 维度6集中收编 | AI典型写法黑名单（句式A1-A13、用词B1-B8、结构C1-C6、质感D1-D5）只收录于 `06-generation-editor.md`，全文件集无重复收录 |
-| 3️⃣ | 编辑校验三问 | 成稿后逐段执行：删除什么 / 哪里应该停顿 / 哪里应该留白 |
-| 4️⃣ | 文学真实性检查 | 是否复制作者表面语言 / 是否缺少真实细节 / 是否只有风格没有世界观 / 人物台词真实性 |
-
-> 🔍 黑名单示例：**A11「短直简」速记式描写** — 禁止“照得人脸上发青”“把东西攥在手里，攥得发白”这类无过程、无细节、无叙事功能的状态派发；**A12 主题词借壳** — 禁止虚构人物替文章论点说话、配完美金句；**A13 句尾顿悟点评与缀饰** — 禁止事实+顿悟、描写+缀饰的两段式（如“两样钱，都黑”“眉毛蜷起来，像烧过的纸”），叙述在事实本身处停止。
-
-## 🚀 快速开始
-
-### 1. 安装到 skills 目录
+Requires Git, and Python 3.8+ only when you extract an ebook. Installing a skill means copying a folder onto the agent's skill path. The parent's `name` field is `a-writer-should-do`; on Cursor the folder name should match.
 
 ```bash
 git clone https://github.com/masterball-w/A-writer-should-do.git
 
-# Cursor（全局）：~/.cursor/skills/；也可放项目内 .cursor/skills/
+# Cursor, user-wide. A project-local copy lives in .cursor/skills/ instead.
 mkdir -p ~/.cursor/skills
 cp -r A-writer-should-do ~/.cursor/skills/a-writer-should-do
 
-# Claude Code（全局）：~/.claude/skills/；也可放项目内 .claude/skills/
+# Claude Code, user-wide. A project-local copy lives in .claude/skills/ instead.
 mkdir -p ~/.claude/skills
 cp -r A-writer-should-do ~/.claude/skills/a-writer-should-do
 ```
 
-- 目标文件夹建议命名为小写的 `a-writer-should-do`，与 `SKILL.md` 中的 `name` 一致（Cursor 要求 `name` 与所在文件夹同名）。
-- 想直接用现成的子 Skill 仿写，把对应文件夹单独复制到同一个 skills 目录下，例如：
-  `cp -r A-writer-should-do/write-like-zhouguoping ~/.cursor/skills/`
-- 其他支持 `SKILL.md` 的 agent，放进它的 skills 目录即可（Cursor 也会读取 `.agents/skills/`、`~/.claude/skills/`）。
-
-### 2. 准备书籍文本（epub / mobi / azw3）
-
-txt、md 纯文本可以直接用。电子书先用 `scripts/` 里的脚本转成纯文本（需要 Python 3.8+）：
+To write with an existing child and not distill anything, copy that folder by itself:
 
 ```bash
-cd ~/.cursor/skills/a-writer-should-do   # 或你的安装目录
-mkdir -p ~/books/out                     # 输出目录需事先建好
-
-python3 scripts/extract_epub.py ~/books/书名.epub -o ~/books/out   # 仅用标准库
-python3 scripts/extract_mobi.py ~/books/书名.mobi -o ~/books/out   # 需 pip install mobi，或安装 calibre
-python3 scripts/extract_azw3.py ~/books/书名.azw3 -o ~/books/out   # 需安装 calibre（ebook-convert），或 pip install mobi
+cp -r A-writer-should-do/write-like-zhouguoping ~/.cursor/skills/
 ```
 
-输出两个 UTF-8 文件：`书名_fulltext.txt`（按阅读顺序拼接的纯正文）和 `书名_toc.txt`（目录，每行带该章在正文中的字符偏移）。带 DRM 的电子书无法提取，提取失败时不要拿未清洗的 HTML 去分析。
+Optional extractors:
 
-### 3. 在对话中调用
+```bash
+pip install mobi          # MOBI, and the AZW3 fallback
+# Calibre provides ebook-convert, used by AZW3 first and by MOBI as a fallback
+```
 
-蒸馏一本书（母 Skill）：
+There is no `requirements.txt` and no installable package.
+
+## Usage
+
+### 1. Make plain text
+
+`.txt` and `.md` can be passed through as they are. For an ebook, create the output directory first. The scripts do not create it.
+
+```bash
+mkdir -p "$HOME/books/out"
+
+python3 scripts/extract_epub.py "$HOME/books/book.epub" -o "$HOME/books/out"
+python3 scripts/extract_mobi.py "$HOME/books/book.mobi" -o "$HOME/books/out"
+python3 scripts/extract_azw3.py "$HOME/books/book.azw3" -o "$HOME/books/out"
+```
+
+`-o` defaults to the input file's directory. On success the script prints the two output paths, the character count, and the number of TOC entries.
+
+### 2. Distill with the parent skill
+
+In the agent chat, point at the extracted text and say where the child skill should be saved:
 
 ```text
-用 a-writer-should-do 蒸馏 ~/books/out/书名_fulltext.txt，
-目录参考 ~/books/out/书名_toc.txt，生成的 write-like-xxx 保存到 ~/.cursor/skills/
+Use a-writer-should-do on ~/books/out/书名_fulltext.txt.
+Use ~/books/out/书名_toc.txt as the table of contents.
+Save the write-like-* folder to ~/.cursor/skills/.
 ```
 
-也可以输入 `/a-writer-should-do` 显式调用。没有指定保存位置时，Skill 会先向你确认；蒸馏报告保存到当前工作目录。
+You can also invoke it by name (`/a-writer-should-do` on hosts that work that way). If you leave the destination out, the skill says to ask before writing the folder. The report is written to the working directory.
 
-用子 Skill 写作：
+A finished child from this procedure uses the new filenames in [Two layouts](#two-layouts-in-this-repository), not the filenames of the seven existing children.
+
+### 3. Write with a child skill
 
 ```text
-用 write-like-zhouguoping 写一篇关于"AI 时代人还剩下什么"的随笔，1500 字左右
+Use write-like-zhouguoping to write an essay of about 1500 Chinese characters
+on what a person still does in a time of machine-written text.
 ```
 
-成稿以 `{文章标题}.md` 保存到当前工作目录。
+The shipped children tell the agent to read the Literary DNA Summary first, draft with dimensions 1–5 in order, then run the whole of dimension 6. The piece is saved as `{文章标题}.md` in the working directory. The parent skill adds: if that name exists, append a number, do not overwrite.
 
-### 流程说明
+The same folders also describe narrower jobs: rewrite a passage, or check a draft against the checklist and the failure modes.
 
-**用母 Skill 蒸馏新书**
+## Examples
 
-1. 将 `A-writer-should-do` 目录放置于当前 IDE 的 Skill 目录下
-2. 提供单本图书文本；若为 epub / mobi / azw3，先执行 `scripts/` 下对应提取脚本
-3. Skill 自动按五步流水线执行蒸馏（文本理解 → DNA提取 → 证据验证 → 规则转换 → 编辑校验）
-4. 最终在 Skill 目录下生成一套 `write-like-{作者}/` 文件集（1主文件 + 6维度文件）
+The picture uses only text already stored in this repo. It is the shipped Zhou Guoping child (the older six-file layout), not a live run of the current parent template.
 
-**用子 Skill 指导仿写**
+<p><img src="docs/images/demo.png" alt="One book, the Zhou Guoping child skill, and a short new essay" width="100%"></p>
 
-1. 将任一子 Skill（如 `write-like-yuhua-novel`）放置于当前 IDE 的 Skill 目录下
-2. 先读主文件的 **Literary DNA Summary**（最高优先级），再按顺序加载维度1→5落实初稿
-3. 初稿完成后执行维度6全套校验：黑名单 → 真实性检查 → 编辑三问 → 人写技术 → 叙事逻辑自检 → 反模仿伦理
-4. 对照 **Common Failure Modes** 复查，成稿以 `{文章标题}.md` 保存到当前工作目录
+Source of the picture: [`docs/src/demo.html`](docs/src/demo.html).
 
-## 📝 输出示例
+**Child skill, Literary DNA Summary** in [`write-like-zhouguoping/SKILL.md`](write-like-zhouguoping/SKILL.md) (abridged):
 
-下面的内容全部节选自仓库里已有的 `write-like-zhouguoping` 实例，没有重新生成。
-
-<p align="center"><img src="docs/images/demo.png" alt="一本书 → 子 Skill → 新文章 示意图" width="100%"></p>
-
-**蒸馏产物**：[`write-like-zhouguoping/SKILL.md`](write-like-zhouguoping/SKILL.md) 顶部的 Literary DNA Summary（节选）
-
-> **核心表达机制**：格言短段（单句成段）与密实随感段交错；辩证翻转代替线性论证；「我」字入场再推及「我们」；抽象判断必须落回一个具象物（绿芽、园地、碑）。
+> Core mechanism: one-sentence aphorisms alternate with denser informal paragraphs; a claim is reversed instead of proved in a straight line; "I" enters before "we"; an abstract judgment has to land on a concrete thing.
 >
-> **生成时最需避免**：俯视说教与「你应该」口吻；鸡汤式乐观；总结升华式结尾；华丽辞藻与精致形容词；网络流行语；给出彻底解决方案或行动清单。
+> Do not: talk down to the reader, end with a moral, offer a complete plan, or use ornate adjectives.
 
-**用这个子 Skill 写的文章**：[`灵魂还有事可做_AI时代人生哲思.md`](write-like-zhouguoping/灵魂还有事可做_AI时代人生哲思.md)（节选）
+**Piece written with that child:** [`write-like-zhouguoping/灵魂还有事可做_AI时代人生哲思.md`](write-like-zhouguoping/灵魂还有事可做_AI时代人生哲思.md) (abridged). The file header says it was written with `write-like-zhouguoping`.
 
 > 有一回深夜，我试着让一台机器替我写一段文字。它写得很快，字句也通顺，我读完却一点也不动心。我想起从前自己写东西，为一句话想半天，删了又写，写了又删，心里倒是高兴的。
 >
@@ -282,57 +185,58 @@ python3 scripts/extract_azw3.py ~/books/书名.azw3 -o ~/books/out   # 需安装
 >
 > 机器越来越像人，人越来越像机器，这两件事貌似相反，实则相通。如今人人都向机器要答案，渐渐就懒得向自己提问题了。
 
-可以对照着看：摘要里写的"单句成段""辩证翻转""落回具象物"，在文章里分别对应"我是可以被替代的。"这样的单句段、"貌似相反，实则相通"的翻转，以及深夜写字这件具体的事。
+The single-sentence paragraph and the reversal ("貌似相反，实则相通") are the two moves named in that summary. The essay is new prose stored in the repo; it is not the source book.
 
-## 📁 文件说明
+## Project structure
 
-```
+```text
 A-writer-should-do/
-├── SKILL.md              # 母 Skill 完整定义（五步流水线 / 六维细则 / 转换法则 / 模板 / 黑名单 / 自检清单）
-├── README.md             # 本说明
-├── scripts/              # 配套提取脚本（步骤0：电子书转纯文本）
-│   ├── extract_epub.py   # EPUB 提取（纯标准库：正文 + 索引式 TOC）
-│   ├── extract_mobi.py   # MOBI 提取（mobi 包解包，回退 calibre）
-│   ├── extract_azw3.py   # AZW3 提取（calibre 转 epub，回退 mobi 包）
-│   └── _text_clean.py    # 共用清洗模块：去除 style/script/head 等，只保留正文
-├── write-like-pha/           # 子 Skill 实例1（基于《人生拒绝清单》）
-│   ├── SKILL.md              # 主调度（DNA Summary / 总纲 / 执行顺序 / 失败案例 / 校验清单 / 种子文本库 / 边界说明）
-│   ├── 01-author-spirit.md
-│   ├── 02-theme-worldview.md
-│   ├── 03-narrative-mechanism.md
-│   ├── 04-language-rhythm.md
-│   ├── 05-expression-and-space.md
-│   └── 06-generation-editor.md
-├── write-like-zhouguoping/   # 子 Skill 实例2（基于《周国平人生哲思录》，同构6+1文件）
-├── write-like-yuhua/         # 子 Skill 实例3（基于《我们生活在巨大的差距里》，同构6+1文件）
-├── write-like-yuhua-novel/   # 子 Skill 实例4（基于《活着》，同构6+1文件）
-├── write-like-liuzhenyun/    # 子 Skill 实例5（基于《一日三秋》，同构6+1文件）
-├── write-like-lijieren/      # 子 Skill 实例6（基于《死水微澜》，同构6+1文件）
-└── write-like-moyan/         # 子 Skill 实例7（基于《蛙》，同构6+1文件）
+├── SKILL.md                 # Parent procedure (current distillation spec)
+├── README.md                # This file
+├── README_zh.md             # Chinese README
+├── CONTRIBUTING.md
+├── CHANGELOG.md
+├── .github/ISSUE_TEMPLATE/  # Bug report and feature request
+├── docs/
+│   ├── images/demo.png
+│   └── src/demo.html
+├── scripts/
+│   ├── extract_epub.py
+│   ├── extract_mobi.py
+│   ├── extract_azw3.py
+│   └── _text_clean.py
+├── write-like-pha/          # 1 dispatcher + 6 dimension files
+├── write-like-zhouguoping/  # same, plus one sample essay
+├── write-like-yuhua/
+├── write-like-yuhua-novel/
+├── write-like-liuzhenyun/
+├── write-like-lijieren/
+└── write-like-moyan/
 ```
 
-## 🎯 适用文体
+Each child folder is the dispatcher plus `01` through `06`. There is no test suite, no `requirements.txt`, and no `LICENSE`.
 
-小说、散文、杂文、社科论述、传记等各类文体。纯文本（txt/md）可直接输入；电子书格式由 `scripts/` 下脚本转为纯文本后再进入流水线。母 Skill 内置文体差异化权重指引与**文体特化要求**，自动调整六维提取深度，并在分析/提取/生成/校验四阶段按文体执行专项规则。
+## Limitations
 
-## ✅ 质量保障
+These are gaps in the current tree, not planned behavior:
 
-- **两阶段输出**：先完成内部特征分析报告（含文学核心摘要草稿），再转化为派生 Skill
-- **原文证据验证**：频次≥3、降噪排除、例证回填三重验证，无例证的特征不入库
-- **两组自检清单**：分析报告自检（10.1）+ 派生文件集自检（10.2）
-- **维度6终检**：黑名单逐条校验 + 文学真实性四项 + 编辑三问 + 人写模拟E1-E8 + 叙事逻辑四项 + 反模仿伦理
-- **Common Failure Modes**：每个子 Skill 内置最多5条高频失败案例（错误/原因/修正），写作前后各对照一遍
+- Parent template and the seven children use different filenames, different section schemes, and different rule formats.
+- Step 3 of the parent skill tells the agent to measure sentence-length percentiles, short-sentence share (≤15 characters), long-sentence share (≥50), words, and punctuation **with a script**, on samples of the same function, and not to invent the numbers. `scripts/` only contains the ebook extractors.
+- `extract_mobi.py`, on the `mobi` package path, does not map NCX links to character offsets. It pairs TOC entry *i* with the start of HTML file *i*. The EPUB 3 nav parser records every entry at depth 0.
+- Passing `-o` to a directory that does not exist makes the script fail when it opens the output file.
+- Child seed libraries quote passages from the source books and tell the agent to copy their structure, not their sentences. The parent skill forbids transferring original sentences into a child skill. Both statements are in the repo.
+- Nothing here is an automated detector of AI-written text. Dimension 6 is a list the agent checks by hand.
 
-## 🔗 我的其他项目
+## Contributing
 
-- [supplement-checker](https://github.com/masterball-w/supplement-checker)：拍一张保健品照片，让 agent 查成分研究证据、各地区注册与认证、同成分价格，输出带来源的核查报告
+Bug reports and feature requests use the templates in [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/). Pull requests that fix an extractor, correct a rule against the book it cites, or bring the parent template and the children into one layout are welcome. Read [`CONTRIBUTING.md`](CONTRIBUTING.md) before sending a large skill folder: do not commit a full copyrighted book, and do not add DRM-removal instructions.
 
----
+## License
 
-<div align="center">
+This repository has no `LICENSE` file. GitHub reports no license. Until the maintainer adds one, no open-source license is granted by this repo. Do not assume MIT, Apache-2.0, or any other terms.
 
-**📖 从一本书，蒸馏一种理解世界的方式。**
+The child skills name copyrighted books and quote passages from them. Those quotations are not relicensed by this note.
 
-如果这个项目对你有帮助，欢迎 ⭐ Star 支持一下
+## Maintainer's other project
 
-</div>
+- [supplement-checker](https://github.com/masterball-w/supplement-checker) — a separate agent skill: photograph a supplement, then check ingredient research, regional registration, and prices. It is not part of this repository.
